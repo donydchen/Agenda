@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     backend/src/Date.cpp \
     backend/src/Meeting.cpp \
     backend/src/Storage.cpp \
-    backend/src/User.cpp
+    backend/src/User.cpp \
+    loginwindow.cpp
 
 HEADERS  += mainwindow.h \
     backend/src/AgendaService.h \
@@ -27,9 +28,11 @@ HEADERS  += mainwindow.h \
     backend/src/Date.h \
     backend/src/Meeting.h \
     backend/src/Storage.h \
-    backend/src/User.h
+    backend/src/User.h \
+    loginwindow.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    loginwindow.ui
 
 DISTFILES += \
     backend/src/Agenda.json \

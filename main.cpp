@@ -1,10 +1,13 @@
-#include "mainwindow.h"
+#include "loginwindow.h"
 #include <QApplication>
+#include <QStyleFactory>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w;
+    //change theme to fusion
+    QApplication::setStyle(QStyleFactory::create("Fusion"));
+    LoginWindow w;
     w.show();
 
     return a.exec();

@@ -15,4 +15,4 @@ AgendaUI: AgendaUI.h AgendaUI.cpp
 	g++ AgendaUI.h AgendaUI.cpp -c -std=c++11 -g
 
 clean:
-	rm *.o *.gch Agenda
+	rm *.o *.gch
