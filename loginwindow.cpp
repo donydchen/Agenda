@@ -65,7 +65,7 @@ void LoginWindow::on_signup_clicked()
             ui->signupwidget->hide();
             ui->loginwidget->show();
             ui->username->setText(QString::fromStdString(username));
-            ui->password->setText(QString::fromStdString(password));
+            //ui->password->setText(QString::fromStdString(password));
         }
         else {
             QMessageBox::warning(NULL, "SignUp Failed",

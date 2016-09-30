@@ -8,8 +8,8 @@ using std::string;
 using std::list;
 
 MainWindow::MainWindow(string username, string password, QWidget *parent) :
-    userName_(username), userPassword_(password), QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    userName_(username), userPassword_(password), QMainWindow(parent)
 {
     ui->setupUi(this);
     ui->actionLogout->setText(ui->actionLogout->text() + " \"" + userName_.c_str() + "\"");
@@ -17,8 +17,16 @@ MainWindow::MainWindow(string username, string password, QWidget *parent) :
     setWindowTitle(windowTitle() + " : " + userName_.c_str());
 
     btnStatus = BtnStatus::Query;
-
+    //set table view to be uneditable
     ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+    //display current time in status bar
+    curTime = new QLabel("   " + QTime::currentTime().toString("hh:mm:ss"), ui->statusBar);
+    startTimer(1000);
+
+    //set up the homepage
+    ui->wel_label->setText(ui->wel_label->text() + userName_.c_str());
+
     showPage(PageType::HomePage);
 }
 
@@ -109,7 +117,13 @@ void MainWindow::on_actionList_triggered()
             model->setItem(i, 2, phoneItem);
         }
         ui->tableView->setModel(model);
-        ui->tableView->show();
+        // set table to be auto expended
+        for (int c = 0; c < ui->tableView->horizontalHeader()->count(); ++c)
+        {
+            ui->tableView->horizontalHeader()->setSectionResizeMode(
+                c, QHeaderView::Stretch);
+        }
+        showPage(PageType::TableView);
     }
     else {
         QMessageBox::information(NULL, "List User", "Sorry, no user exist!", QMessageBox::Ok);
@@ -332,6 +346,12 @@ void MainWindow::on_searchBtn_clicked()
                 model->setItem(i, 3, endItem);
             }
             ui->tableView->setModel(model);
+            // set table to be auto expended
+            for (int c = 0; c < ui->tableView->horizontalHeader()->count(); ++c)
+            {
+                ui->tableView->horizontalHeader()->setSectionResizeMode(
+                    c, QHeaderView::Stretch);
+            }
             showPage(PageType::TableView);
         }
         else {
@@ -359,6 +379,11 @@ void MainWindow::on_searchBtn_2_clicked()
     }
 }
 
+
+void MainWindow::on_actionAbout_triggered()
+{
+    QMessageBox::about(NULL, "Agenda", "Agenda is a simple app writen by Donald<br>1st Oct. 2016");
+}
 
 /**
  * @brief MainWindow::printMeetings
@@ -388,6 +413,12 @@ void MainWindow::printMeetings(std::list<Meeting> meetings) {
         model->setItem(i, 4, endItem);
     }
     ui->tableView->setModel(model);
+    // set table to be auto expended
+    for (int c = 0; c < ui->tableView->horizontalHeader()->count(); ++c)
+    {
+        ui->tableView->horizontalHeader()->setSectionResizeMode(
+            c, QHeaderView::Stretch);
+    }
     showPage(PageType::TableView);
 }
 
@@ -417,4 +448,15 @@ void MainWindow::showPage(PageType pageType) {
             ui->welcomewidget->show();
     }
 }
+
+
+/**
+ * @brief MainWindow::timerEvent
+ * @param event
+ * update current time in status bar
+ */
+void MainWindow::timerEvent(QTimerEvent *event) {
+    curTime->setText("   " + QTime::currentTime().toString("hh:mm:ss"));
+}
+
 

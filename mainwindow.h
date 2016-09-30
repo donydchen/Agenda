@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "backend/src/AgendaService.h"
+#include <QLabel>
 
 
 namespace Ui {
@@ -50,8 +51,11 @@ private slots:
 
     void on_searchBtn_2_clicked();
 
+    void on_actionAbout_triggered();
+
 private:
     Ui::MainWindow *ui;
+    QLabel *curTime;
     std::string userName_;
     std::string userPassword_;
     AgendaService agendaService_;
@@ -61,6 +65,7 @@ private:
 
     void printMeetings(std::list<Meeting> meetings);
     void showPage(PageType pagetype);
+    void timerEvent(QTimerEvent *event);
 };
 
 #endif // MAINWINDOW_H
