@@ -2,6 +2,7 @@
 #define AGENDAUI_H
 
 #include "AgendaService.h"
+#include "JsonService.h"
 #include <iostream>
 #include <string>
 
@@ -11,12 +12,18 @@ class AgendaUI {
   void OperationLoop(void);
 
  private:
+  std::string userName_;
+  std::string userPassword_;
+  JsonService jsonService_;
+  AgendaService *agendaService_ = &jsonService_;
+
   // task functions
   void startAgenda(void);
   std::string getOperation();
   bool executeOperation(std::string op);
   void userLogIn(void);
   void userRegister(void);
+  void setupBackend(void);
   void quitAgenda(void);
   void userLogOut(void);
   void deleteUser(void);
@@ -30,10 +37,7 @@ class AgendaUI {
   void deleteMeetingByTitle(void);
   void deleteAllMeetings(void);
   void printMeetings(std::list<Meeting> meetings);
-  // dates
-  std::string userName_;
-  std::string userPassword_;
-  AgendaService agendaService_;
+
 };
 
 #endif

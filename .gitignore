@@ -1,0 +1,3 @@
+backend/src/Agenda
+backend/src/*.o
+backend/src/*.h.gch

@@ -1,20 +1,20 @@
-#include "AgendaService.h"
+#include "JsonService.h"
 
 using std::string;
 using std::list;
 
-AgendaService::AgendaService() { }
+JsonService::JsonService() { }
 
-AgendaService::~AgendaService() {
+JsonService::~JsonService() {
     storage_->getInstance()->sync();
 }
 
 
-bool AgendaService::userLogIn(string userName, string password) {
+bool JsonService::userLogIn(string userName, string password) {
     list<User> tempList;
     tempList = storage_->getInstance()->queryUser(
         [&userName, &password](const User &user) {
-            return (user.getName() == userName) && 
+            return (user.getName() == userName) &&
                    (user.getPassword() == password);
         });
     if (!tempList.empty())
@@ -23,7 +23,7 @@ bool AgendaService::userLogIn(string userName, string password) {
         return false;
 }
 
-bool AgendaService::userRegister(string userName, string password,
+bool JsonService::userRegister(string userName, string password,
                                 string email, string phone) {
     list<User> tempList;
     tempList = storage_->getInstance()->queryUser(
@@ -31,7 +31,7 @@ bool AgendaService::userRegister(string userName, string password,
             return user.getName() == userName;
         });
     //username already exist
-    if (!tempList.empty()) 
+    if (!tempList.empty())
         return false;
 
     storage_->getInstance()->createUser(
@@ -40,7 +40,7 @@ bool AgendaService::userRegister(string userName, string password,
 }
 
 //got to delete the meeting created by the user together
-bool AgendaService::deleteUser(string userName, string password) {
+bool JsonService::deleteUser(string userName, string password) {
     //0 for flase, and others for true
     return storage_->getInstance()->deleteUser(
         [&userName, &password](const User& user) {
@@ -49,7 +49,7 @@ bool AgendaService::deleteUser(string userName, string password) {
         }) && deleteAllMeetings(userName);
 }
 
-list<User> AgendaService::listAllUsers(void) {
+list<User> JsonService::listAllUsers(void) const {
     return storage_->getInstance()->queryUser(
         [](const User &user) {
             return user.getName() != "";
@@ -57,7 +57,7 @@ list<User> AgendaService::listAllUsers(void) {
 }
 
 
-bool AgendaService::createMeeting(string userName, string title,
+bool JsonService::createMeeting(string userName, string title,
                                   string participator,
                                   string startDate, string endDate) {
 
@@ -104,7 +104,7 @@ bool AgendaService::createMeeting(string userName, string title,
 }
 
 //the username here can be sponsor or participator
-list<Meeting> AgendaService::meetingQuery(string userName, string title) {
+list<Meeting> JsonService::meetingQuery(string userName, string title) const {
     return storage_->getInstance()->queryMeeting(
         [&userName, &title](const Meeting &meeting) {
             return ((meeting.getSponsor() == userName) || (meeting.getParticipator() == userName)) &&
@@ -114,43 +114,43 @@ list<Meeting> AgendaService::meetingQuery(string userName, string title) {
 
 //the username here can be sponsor or participator
 //the meetings between startDate and endDate are all valid
-list<Meeting> AgendaService::meetingQuery(string userName, string startDate,
-                                         string endDate) {
+list<Meeting> JsonService::meetingQuery(string userName, string startDate,
+                                         string endDate) const {
     return storage_->getInstance()->queryMeeting(
         [&userName, &startDate, &endDate](const Meeting &meeting) {
             return ((meeting.getSponsor() == userName) || (meeting.getParticipator() == userName)) &&
-                   ((meeting.getStartDate() >= Date::stringToDate(startDate)) && 
+                   ((meeting.getStartDate() >= Date::stringToDate(startDate)) &&
                     (meeting.getEndDate() <= Date::stringToDate(endDate)));
         });
 }
 
 //the username here can be sponsor or participator
-list<Meeting> AgendaService::listAllMeetings(string userName) {
+list<Meeting> JsonService::listAllMeetings(string userName) const {
     return storage_->getInstance()->queryMeeting(
         [&userName](const Meeting &meeting) {
             return (meeting.getSponsor() == userName) ||
                    (meeting.getParticipator() == userName);
-        });    
+        });
 }
 
-list<Meeting> AgendaService::listAllSponsorMeetings(string userName) {
+list<Meeting> JsonService::listAllSponsorMeetings(string userName) const {
     return storage_->getInstance()->queryMeeting(
         [&userName](const Meeting &meeting) {
             return meeting.getSponsor() == userName;
         });
 }
 
-list<Meeting> AgendaService::listAllParticipateMeetings(string userName) {
+list<Meeting> JsonService::listAllParticipateMeetings(string userName) const {
     return storage_->getInstance()->queryMeeting(
         [&userName](const Meeting &meeting) {
             return meeting.getParticipator() == userName;
         });
 }
 
-bool AgendaService::deleteMeeting(string userName, string title) {
+bool JsonService::deleteMeeting(string userName, string title) {
     list<Meeting> theMeeting = meetingQuery(userName, title);
     //if the meeting does not exist, make it as delete already
-    if (theMeeting.empty()) 
+    if (theMeeting.empty())
         return true;
 
     return storage_->getInstance()->deleteMeeting(
@@ -160,7 +160,7 @@ bool AgendaService::deleteMeeting(string userName, string title) {
         });
 }
 
-bool AgendaService::deleteAllMeetings(string userName) {
+bool JsonService::deleteAllMeetings(string userName) {
     list<Meeting> allMeetings = listAllMeetings(userName);
     //if the user does not involve in any meetings
     if (allMeetings.empty())
@@ -171,12 +171,4 @@ bool AgendaService::deleteAllMeetings(string userName) {
             return (meeting.getParticipator() == userName) ||
                    (meeting.getSponsor() == userName);
         });
-}
-
-void AgendaService::startAgenda(void) {
-
-}
-
-void AgendaService::quitAgenda(void) {
-    storage_->getInstance()->sync();
 }

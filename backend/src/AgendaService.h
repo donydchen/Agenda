@@ -1,38 +1,31 @@
 #ifndef AGENDASERVICE_H
 #define AGENDASERVICE_H
 
-#include "Storage.h"
+#include "User.h"
+#include "Meeting.h"
 #include <list>
 #include <string>
 
 class AgendaService {
- public:
-  AgendaService();
-  ~AgendaService();
-  bool userLogIn(std::string userName, std::string password);
-  bool userRegister(std::string userName, std::string password,
-                    std::string email, std::string phone);
-  bool deleteUser(std::string userName, std::string password);
-	// a user can only delete itself
-  std::list<User> listAllUsers(void);
+public:
+    virtual bool userLogIn(std::string userName, std::string password) = 0;
+    virtual bool userRegister(std::string userName, std::string password,
+                      std::string email, std::string phone) = 0;
+    virtual bool deleteUser(std::string userName, std::string password) = 0;
+  	// a user can only delete itself
+    virtual std::list<User> listAllUsers(void) const = 0;
 
-  bool createMeeting(std::string userName, std::string title,
-                     std::string participator,
-                     std::string startDate, std::string endDate);
-  std::list<Meeting> meetingQuery(std::string userName, std::string title);
-  std::list<Meeting> meetingQuery(std::string userName, std::string startDate,
-                                  std::string endDate);
-  std::list<Meeting> listAllMeetings(std::string userName);
-  std::list<Meeting> listAllSponsorMeetings(std::string userName);
-  std::list<Meeting> listAllParticipateMeetings(std::string userName);
-  bool deleteMeeting(std::string userName, std::string title);
-  bool deleteAllMeetings(std::string userName);
-
-  void startAgenda(void);
-  void quitAgenda(void);
-
- private:
-  Storage *storage_;
+    virtual bool createMeeting(std::string userName, std::string title,
+                       std::string participator,
+                       std::string startDate, std::string endDate) = 0;
+    virtual std::list<Meeting> meetingQuery(std::string userName, std::string title) const = 0;
+    virtual std::list<Meeting> meetingQuery(std::string userName, std::string startDate,
+                                    std::string endDate) const = 0;
+    virtual std::list<Meeting> listAllMeetings(std::string userName) const = 0;
+    virtual std::list<Meeting> listAllSponsorMeetings(std::string userName) const = 0;
+    virtual std::list<Meeting> listAllParticipateMeetings(std::string userName) const = 0;
+    virtual bool deleteMeeting(std::string userName, std::string title) = 0;
+    virtual bool deleteAllMeetings(std::string userName) = 0;
 };
 
 #endif
