@@ -22,8 +22,9 @@ class Storage {
     std::list<User> userList_;
     std::list<Meeting> meetingList_;
     // File IO
-    bool readFromFile(const char *fpath);
-    bool writeToFile(const char *fpath);
+    const char *fPath_;
+    bool readFromFile(void);
+    bool writeToFile(void);
   public:
     // singleton
     static Storage *getInstance(void);
@@ -49,6 +50,8 @@ class Storage {
     // return the number of deleted meetings
     // File IO
     bool sync(void);
+    // Setup local file
+    void setupPath(const char *fPath);
 };
 
 #endif

@@ -7,10 +7,14 @@ using std::string;
 
 LoginWindow::LoginWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::LoginWindow)
+    ui(new Ui::LoginWindow),
+    jsonService_("/home/donald/Code/Agenda/backend/src/data/Agenda.json"),
+    sqliteService_("/home/donald/Code/Agenda/backend/src/data/Agenda.sqlite3")
 {
     ui->setupUi(this);
     ui->signupwidget->hide();
+
+    agendaService_ = &sqliteService_;
 }
 
 LoginWindow::~LoginWindow()
@@ -29,13 +33,14 @@ void LoginWindow::on_pushButton_clicked()
         QString qPassword = ui->password->text();
         string username = qUsername.toUtf8().constData();
         string password = qPassword.toUtf8().constData();
-        if (agendaService_.userLogIn(username, password)) {
+        setupBackend(ui->backendBox->currentText());
+        if (agendaService_->userLogIn(username, password)) {
             //close window and open new main window with username and password
             string content = "Sign in as <font color='red'>" + username + "</font><br>"
                     + "Click OK to continue...";
             QMessageBox::information(NULL, "SignIn Success", content.c_str(),
                                      QMessageBox::Ok);
-            MainWindow *mainWindow = new MainWindow(username, password);
+            MainWindow *mainWindow = new MainWindow(username, password, agendaService_);
             mainWindow->show();
             close();
         } else {
@@ -57,8 +62,9 @@ void LoginWindow::on_signup_clicked()
         string password = ui->upPass->text().toUtf8().constData();
         string email = ui->email->text().toUtf8().constData();
         string phone = ui->phone->text().toUtf8().constData();
+        setupBackend(ui->backendBox->currentData().toString());
         // sign up success
-        if (agendaService_.userRegister(username, password, email, phone)) {
+        if (agendaService_->userRegister(username, password, email, phone)) {
             string content = "Your username is <font color='red'>" + username + "</font>";
             QMessageBox::information(NULL, "SignUp Success", content.c_str(),
                                      QMessageBox::Ok);
@@ -73,4 +79,15 @@ void LoginWindow::on_signup_clicked()
         }
     }
 
+}
+
+
+void LoginWindow::setupBackend(QString backend) {
+    if (backend == QString::fromStdString("JSON")) {
+        agendaService_ = &jsonService_;
+    } else if (backend == QString::fromStdString("SQLite")) {
+        agendaService_ = &sqliteService_;
+    } else {
+        // other service
+    }
 }

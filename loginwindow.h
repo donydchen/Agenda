@@ -2,7 +2,8 @@
 #define LOGINWINDOW_H
 
 #include <QMainWindow>
-#include "backend/src/AgendaService.h"
+#include "backend/src/controller/json/JsonService.h"
+#include "backend/src/controller/sqlite/SqliteService.h"
 
 namespace Ui {
 class LoginWindow;
@@ -23,7 +24,11 @@ private slots:
 
 private:
     Ui::LoginWindow *ui;
-    AgendaService agendaService_;
+    JsonService jsonService_;
+    SqliteService sqliteService_;
+    AgendaService *agendaService_;
+
+    void setupBackend(QString);
 };
 
 #endif // LOGINWINDOW_H

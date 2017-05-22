@@ -2,8 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "backend/src/AgendaService.h"
 #include <QLabel>
+#include "backend/src/controller/json/JsonService.h"
+#include "backend/src/controller/sqlite/SqliteService.h"
 
 
 namespace Ui {
@@ -15,7 +16,8 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(std::string username, std::string password, QWidget *parent = 0);
+    explicit MainWindow(std::string username, std::string password,
+                        AgendaService *agendaService, QWidget *parent = 0);
     ~MainWindow();
 
 private slots:
@@ -58,7 +60,8 @@ private:
     QLabel *curTime;
     std::string userName_;
     std::string userPassword_;
-    AgendaService agendaService_;
+
+    AgendaService *agendaService_;
     enum BtnStatus {Query, Delete};
     BtnStatus btnStatus;
     enum PageType {HomePage, TableView, CreateMT, SearchTitle, SearchTime};

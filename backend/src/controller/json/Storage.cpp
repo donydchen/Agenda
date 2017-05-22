@@ -13,12 +13,18 @@ using std::list;
 //definition, fix undefine reference
 Storage* Storage::instance_;
 
+
 Storage::Storage() {
-    readFromFile("data/Agenda.json");
+    //readFromFile();
 }
 
 bool Storage::sync(void) {
-    return  writeToFile("data/Agenda.json");
+    return  writeToFile();
+}
+
+void Storage::setupPath(const char *fPath) {
+    fPath_ = fPath;
+    readFromFile();
 }
 
 void lineTokenizer(string &line, map<string, string> &nameToValue) {
@@ -46,8 +52,8 @@ void lineTokenizer(string &line, map<string, string> &nameToValue) {
     }
 }
 
-bool Storage::readFromFile(const char *fpath) {
-    std::ifstream infile(fpath);
+bool Storage::readFromFile(void) {
+    std::ifstream infile(fPath_);
     if (!infile)
         return false;
 
@@ -95,8 +101,8 @@ bool Storage::readFromFile(const char *fpath) {
 }
 
 
-bool Storage::writeToFile(const char *fpath) {
-    std::ofstream outfile(fpath, std::ofstream::trunc);
+bool Storage::writeToFile(void) {
+    std::ofstream outfile(fPath_, std::ofstream::trunc);
     if (!outfile)
         return false;
 
@@ -120,8 +126,9 @@ bool Storage::writeToFile(const char *fpath) {
 }
 
 Storage* Storage::getInstance(void) {
-    if (instance_ == NULL)
+    if (instance_ == NULL) {
         instance_ = new Storage();
+    }
     return instance_;
 }
 

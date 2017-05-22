@@ -21,7 +21,7 @@
     <property name="geometry">
      <rect>
       <x>180</x>
-      <y>270</y>
+      <y>320</y>
       <width>121</width>
       <height>22</height>
      </rect>
@@ -120,6 +120,9 @@
     </widget>
    </widget>
    <widget class="QWidget" name="signupwidget" native="true">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -252,7 +255,7 @@
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>270</y>
+      <y>320</y>
       <width>121</width>
       <height>22</height>
      </rect>
@@ -261,10 +264,50 @@
      <string>SignIn</string>
     </property>
    </widget>
+   <widget class="QLabel" name="label_9">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>273</y>
+      <width>71</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Backend:</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="backendBox">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>270</y>
+      <width>101</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>SQLite</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>JSON</string>
+     </property>
+    </item>
+   </widget>
    <zorder>loginwidget</zorder>
    <zorder>signup</zorder>
    <zorder>signupwidget</zorder>
    <zorder>pushButton</zorder>
+   <zorder>label_9</zorder>
+   <zorder>backendBox</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

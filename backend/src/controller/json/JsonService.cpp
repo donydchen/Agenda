@@ -3,8 +3,9 @@
 using std::string;
 using std::list;
 
-JsonService::JsonService() {
+JsonService::JsonService(const char *fPath) {
     serviceName_ = "JSON";
+    storage_->getInstance()->setupPath(fPath);
 }
 
 JsonService::~JsonService() {

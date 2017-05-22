@@ -6,38 +6,39 @@
 
 QT       += core gui
 
+LIBS     += -lsqlite3
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = Agenda
+TARGET = AgendaQt
 TEMPLATE = app
+
 
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    backend/src/AgendaService.cpp \
-    backend/src/AgendaUI.cpp \
-    backend/src/Date.cpp \
-    backend/src/Meeting.cpp \
-    backend/src/Storage.cpp \
-    backend/src/User.cpp \
-    loginwindow.cpp
+    loginwindow.cpp \
+    backend/src/controller/sqlite/SqliteService.cpp \
+    backend/src/controller/json/JsonService.cpp \
+    backend/src/controller/json/Storage.cpp \
+    backend/src/model/Date.cpp \
+    backend/src/model/Meeting.cpp \
+    backend/src/model/User.cpp \
 
 HEADERS  += mainwindow.h \
-    backend/src/AgendaService.h \
-    backend/src/AgendaUI.h \
-    backend/src/Date.h \
-    backend/src/Meeting.h \
-    backend/src/Storage.h \
-    backend/src/User.h \
-    loginwindow.h
+    loginwindow.h \
+    backend/src/controller/AgendaService.h \
+    backend/src/controller/json/JsonService.h \
+    backend/src/controller/json/Storage.h \
+    backend/src/controller/sqlite/SqliteService.h \
+    backend/src/model/Date.h \
+    backend/src/model/Meeting.h \
+    backend/src/model/User.h \
+
 
 FORMS    += mainwindow.ui \
     loginwindow.ui
 
 DISTFILES += \
-    backend/src/Agenda.json \
-    backend/doc/Agenda_Architecture_Graph(NOT_UML).pdf \
-    backend/doc/File_Format.pdf \
-    backend/pic/1.png \
-    backend/pic/2.png \
-    backend/README.md
+    backend/src/data/Agenda.json \
+    backend/src/data/Agenda.sqlite3

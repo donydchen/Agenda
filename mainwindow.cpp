@@ -7,14 +7,17 @@
 using std::string;
 using std::list;
 
-MainWindow::MainWindow(string username, string password, QWidget *parent) :
+MainWindow::MainWindow(string username, string password,
+                       AgendaService *agendaService, QWidget *parent) :
     ui(new Ui::MainWindow),
-    userName_(username), userPassword_(password), QMainWindow(parent)
+    userName_(username), userPassword_(password), agendaService_(agendaService),
+    QMainWindow(parent)
 {
     ui->setupUi(this);
     ui->actionLogout->setText(ui->actionLogout->text() + " \"" + userName_.c_str() + "\"");
     ui->actionDelete->setText(ui->actionDelete->text() + " \"" + userPassword_.c_str() + "\"");
-    setWindowTitle(windowTitle() + " : " + userName_.c_str());
+    setWindowTitle(windowTitle() + "(" + agendaService_->getServiceName().c_str()
+                   + ") : " + userName_.c_str());
 
     btnStatus = BtnStatus::Query;
     //set table view to be uneditable
@@ -32,7 +35,7 @@ MainWindow::MainWindow(string username, string password, QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-    agendaService_.quitAgenda();
+    //agendaService_->quitAgenda();
     delete ui;
 }
 
@@ -68,7 +71,7 @@ void MainWindow::on_actionDelete_triggered()
                                     content.c_str(),
                                     QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
     if (ans == QMessageBox::Yes) {
-        if (agendaService_.deleteUser(userName_, userPassword_)) {
+        if (agendaService_->deleteUser(userName_, userPassword_)) {
             content = "Successfully delete user " + userName_ +
                     "<br>Click OK to continue...";
             QMessageBox::information(NULL, "Delete Succeed",
@@ -88,7 +91,7 @@ void MainWindow::on_actionDelete_triggered()
 
 void MainWindow::on_actionExit_triggered()
 {
-    agendaService_.quitAgenda();
+    //agendaService_->quitAgenda();
     qApp->closeAllWindows();
 }
 
@@ -99,7 +102,7 @@ void MainWindow::on_actionExit_triggered()
 void MainWindow::on_actionList_triggered()
 {
     //ui->tableView->hide();
-    list<User> users = agendaService_.listAllUsers();
+    list<User> users = agendaService_->listAllUsers();
     if (!users.empty()) {
         int rows = users.size();
         QStandardItemModel *model = new QStandardItemModel(rows, 3, this);
@@ -139,7 +142,7 @@ void MainWindow::on_actionList_triggered()
 void MainWindow::on_actionList_All_Meetings_triggered()
 {
     //ui->tableView->hide();
-    list<Meeting> meetings = agendaService_.listAllMeetings(userName_);
+    list<Meeting> meetings = agendaService_->listAllMeetings(userName_);
     if (!meetings.empty()) {
         printMeetings(meetings);
     }
@@ -156,7 +159,7 @@ void MainWindow::on_actionList_All_Meetings_triggered()
  */
 void MainWindow::on_actionList_All_Sponsor_Meetings_triggered()
 {
-    list<Meeting> meetings = agendaService_.listAllSponsorMeetings(userName_);
+    list<Meeting> meetings = agendaService_->listAllSponsorMeetings(userName_);
     if (!meetings.empty()) {
        printMeetings(meetings);
     }
@@ -174,7 +177,7 @@ void MainWindow::on_actionList_All_Sponsor_Meetings_triggered()
 void MainWindow::on_actionList_All_Participant_Meetings_triggered()
 {
     //ui->tableView->hide();
-    list<Meeting> meetings = agendaService_.listAllParticipateMeetings(userName_);
+    list<Meeting> meetings = agendaService_->listAllParticipateMeetings(userName_);
     if (!meetings.empty()) {
        printMeetings(meetings);
     }
@@ -194,7 +197,7 @@ void MainWindow::on_actionCreate_A_Meeting_triggered()
     ui->welcomewidget->hide();
 
     // add users to participator combo box
-    list<User> users = agendaService_.listAllUsers();
+    list<User> users = agendaService_->listAllUsers();
     list<User>::iterator it;
     for (it = users.begin(); it != users.end(); ++it) {
         string user = it->getName();
@@ -225,7 +228,7 @@ void MainWindow::on_crtMtBtn_clicked()
     string participator = ui->parComboBox->currentText().toUtf8().constData();
     string startTime = ui->startDT->dateTime().toString("yyyy-MM-dd/hh:mm").toUtf8().constData();
     string endTime = ui->endDT->dateTime().toString("yyyy-MM-dd/hh:mm").toUtf8().constData();
-    if (agendaService_.createMeeting(userName_, title, participator, startTime, endTime)) {
+    if (agendaService_->createMeeting(userName_, title, participator, startTime, endTime)) {
         QMessageBox::information(NULL, "Create Meeting", "Successfully create a meeting!",
                                  QMessageBox::Ok);
         showPage(PageType::HomePage);
@@ -257,7 +260,7 @@ void MainWindow::on_actionDelete_All_Meetings_triggered()
                                     "Do you really want to delete ALL the meetings?",
                                     QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
     if (ans == QMessageBox::Yes) {
-        if (agendaService_.deleteAllMeetings(userName_)) {
+        if (agendaService_->deleteAllMeetings(userName_)) {
             QMessageBox::information(NULL, "Delete Meetings", "Successfully deleted all the meeting!");
         }
         else {
@@ -303,7 +306,7 @@ void MainWindow::on_searchBtn_clicked()
 {
     string title = ui->searchTitle->text().toUtf8().constData();
     //search the meeting anyhow
-    list<Meeting> meetings = agendaService_.meetingQuery(userName_, title);
+    list<Meeting> meetings = agendaService_->meetingQuery(userName_, title);
     if (meetings.empty()) {
         QMessageBox::critical(NULL, "No Meeting", "Sorry but no such meeting");
     }
@@ -314,7 +317,7 @@ void MainWindow::on_searchBtn_clicked()
             int ans = QMessageBox::question(NULL, "Delete Meeting", content.c_str(),
                                   QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
             if (ans == QMessageBox::Yes) {
-                if (agendaService_.deleteMeeting(userName_, title)) {
+                if (agendaService_->deleteMeeting(userName_, title)) {
                     QMessageBox::information(NULL, "Delete Meeting",
                                              "Successfully delete the meetings!");
                     on_actionHome_triggered();
@@ -369,7 +372,7 @@ void MainWindow::on_searchBtn_2_clicked()
 {
     string startTime = ui->startDT_2->dateTime().toString("yyyy-MM-dd/hh:mm").toUtf8().constData();
     string endTime = ui->endDT_2->dateTime().toString("yyyy-MM-dd/hh:mm").toUtf8().constData();
-    list<Meeting> meetings = agendaService_.meetingQuery(userName_, startTime, endTime);
+    list<Meeting> meetings = agendaService_->meetingQuery(userName_, startTime, endTime);
     if (!meetings.empty()) {
         printMeetings(meetings);
     }

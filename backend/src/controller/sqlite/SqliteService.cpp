@@ -7,11 +7,11 @@ using std::cout;
 using std::cin;
 using std::endl;
 
-SqliteService::SqliteService() {
+SqliteService::SqliteService(const char *dbPath) : dbPath_(dbPath) {
     serviceName_ = "SQLite";
     // create db and table if needed
-    const char* dbPath = "data/Agenda.sqlite3";
-    int rc = sqlite3_open(dbPath, &db);
+    //const char* dbPath = "data/Agenda.sqlite3";
+    int rc = sqlite3_open(dbPath_, &db);
     if (rc) {
         string errmsg(sqlite3_errmsg(db));
         errmsg = "Can't open database: " + errmsg;
