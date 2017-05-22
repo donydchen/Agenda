@@ -14,7 +14,11 @@ using std::list;
 Storage* Storage::instance_;
 
 Storage::Storage() {
-    readFromFile("Agenda.json");
+    readFromFile("data/Agenda.json");
+}
+
+bool Storage::sync(void) {
+    return  writeToFile("data/Agenda.json");
 }
 
 void lineTokenizer(string &line, map<string, string> &nameToValue) {
@@ -39,7 +43,7 @@ void lineTokenizer(string &line, map<string, string> &nameToValue) {
         //get value and also remove "", 3 means " + : + "
         value = words.substr(cnt + 2, words.size() - name.size() - 3);
         nameToValue[name] = value;
-    }    
+    }
 }
 
 bool Storage::readFromFile(const char *fpath) {
@@ -53,39 +57,39 @@ bool Storage::readFromFile(const char *fpath) {
     //restore userList from file
     getline(infile, line);
     for (size_t i = 0; i < line.size(); i++) {
-        if (std::isdigit(line[i])) 
+        if (std::isdigit(line[i]))
             numStr += line[i];
     }
-    if (!numStr.empty()) 
+    if (!numStr.empty())
         num = std::stoi(numStr);
-    for (size_t i = 0; i < num; i++) {
+    for (int i = 0; i < num; i++) {
         map<string, string> nameToValue;
         getline(infile, line);
         lineTokenizer(line, nameToValue);
         userList_.push_back(
-            User(nameToValue["name"], nameToValue["password"], 
-                nameToValue["email"], nameToValue["phone"])); 
+            User(nameToValue["name"], nameToValue["password"],
+                nameToValue["email"], nameToValue["phone"]));
     }
 
     //restore meetingList from file
     getline(infile, line);
     numStr.clear(); num = 0;
     for (size_t i = 0; i < line.size(); i++) {
-        if (std::isdigit(line[i])) 
+        if (std::isdigit(line[i]))
             numStr += line[i];
     }
-    if (!numStr.empty()) 
+    if (!numStr.empty())
         num = std::stoi(numStr);
-    for (size_t i = 0; i < num; i++) {
+    for (int i = 0; i < num; i++) {
         map<string, string> nameToValue;
         getline(infile, line);
         lineTokenizer(line, nameToValue);
         meetingList_.push_back(
             Meeting(nameToValue["sponsor"], nameToValue["participator"],
-                    Date::stringToDate(nameToValue["sdate"]), 
-                    Date::stringToDate(nameToValue["edate"]), 
-                    nameToValue["title"])); 
-    }    
+                    Date::stringToDate(nameToValue["sdate"]),
+                    Date::stringToDate(nameToValue["edate"]),
+                    nameToValue["title"]));
+    }
 
     return true;
 }
@@ -98,7 +102,7 @@ bool Storage::writeToFile(const char *fpath) {
 
     outfile << "{collection:\"User\",total:" << userList_.size() << "}" << endl;
     for (auto &user : userList_) {
-        outfile << "{name:\"" << user.getName() << "\"," 
+        outfile << "{name:\"" << user.getName() << "\","
                 << "password:\"" << user.getPassword() << "\","
                 << "email:\"" << user.getEmail() << "\","
                 << "phone:\"" << user.getPhone() << "\"}" << endl;
@@ -174,7 +178,7 @@ void Storage::createMeeting(const Meeting &meeting) {
 list<Meeting> Storage::queryMeeting(std::function<bool(const Meeting&)> filter) {
     list<Meeting> tempList;
     for (auto &meeting : meetingList_) {
-        if (filter(meeting)) 
+        if (filter(meeting))
             tempList.push_back(meeting);
     }
     return tempList;
@@ -205,8 +209,4 @@ int Storage::deleteMeeting(std::function<bool(const Meeting&)> filter) {
         }
     }
     return cnt;
-}
-
-bool Storage::sync(void) {
-    return  writeToFile("Agenda.json");
 }

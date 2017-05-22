@@ -1,20 +1,29 @@
-main: Agenda.cpp User Date Meeting Storage JsonService SqliteService AgendaUI
-	g++ Agenda.cpp User.o Date.o Meeting.o Storage.o AgendaService.h JsonService.o SqliteService.o AgendaUI.o -o Agenda -g -std=c++11 -l sqlite3
+OBJS = User.o Date.o Meeting.o Storage.o JsonService.o SqliteService.o AgendaUI.o
+CC = g++
+DEBUG = -g
+CFLAGS = -Wall -c $(DEBUG) -std=c++11
+LFLAGS = -Wall $(DEBUG) -std=c++11
 
-User: User.h User.cpp
-	g++ User.h User.cpp -c -std=c++11 -g
-Date: Date.h Date.cpp
-	g++ Date.h Date.cpp -c -std=c++11 -g
-Meeting: Meeting.h Meeting.cpp
-	g++ Meeting.h Meeting.cpp -c -std=c++11 -g
-Storage: Storage.h Storage.cpp
-	g++ Storage.h Storage.cpp -c -std=c++11 -g
-JsonService: JsonService.h JsonService.cpp
-	g++ JsonService.h JsonService.cpp -c -std=c++11 -g
-SqliteService: SqliteService.h SqliteService.cpp
-	g++ SqliteService.h SqliteService.cpp -c -std=c++11 -g -l sqlite3
-AgendaUI: AgendaUI.h AgendaUI.cpp
-	g++ AgendaUI.h AgendaUI.cpp -c -std=c++11 -g
+Agenda: $(OBJS) Agenda.cpp controller/AgendaService.h
+	$(CC) $(LFLAGS) $(OBJS) Agenda.cpp -o Agenda -l sqlite3
+
+User.o: model/User.h model/User.cpp
+	$(CC) $(CFLAGS) model/User.cpp
+Date.o: model/Date.h model/Date.cpp
+	$(CC) $(CFLAGS) model/Date.cpp
+Meeting.o: model/Meeting.h model/Meeting.cpp
+	$(CC) $(CFLAGS) model/Meeting.cpp
+
+Storage.o: controller/json/Storage.h controller/json/Storage.cpp
+	$(CC) $(CFLAGS) controller/json/Storage.cpp
+JsonService.o: controller/json/JsonService.h controller/json/JsonService.cpp
+	$(CC) $(CFLAGS) controller/json/JsonService.cpp
+
+SqliteService.o: controller/sqlite/SqliteService.h controller/sqlite/SqliteService.cpp
+	$(CC) $(CFLAGS) controller/sqlite/SqliteService.cpp
+
+AgendaUI.o: viewer/AgendaUI.h viewer/AgendaUI.cpp
+	$(CC) $(CFLAGS) viewer/AgendaUI.cpp
 
 clean:
-	rm *.o *.gch
+	rm *.o 

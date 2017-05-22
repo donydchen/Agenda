@@ -3,7 +3,9 @@
 using std::string;
 using std::list;
 
-JsonService::JsonService() { }
+JsonService::JsonService() {
+    serviceName_ = "JSON";
+}
 
 JsonService::~JsonService() {
     storage_->getInstance()->sync();

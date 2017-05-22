@@ -104,7 +104,8 @@ void AgendaUI::userLogIn(void) {
         userPassword_ = password;
         cout << "[log in] succeed!" << endl;
         //print menu
-        cout << "------------------ Agenda ------------------" << endl
+        cout << "-------------- Agenda(" + agendaService_->getServiceName()
+                                          + ") --------------" << endl
              << "Action:"                                      << endl
              << "o\t - log out Agenda"                         << endl
              << "dc\t - delete Agenda account"                 << endl

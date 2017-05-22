@@ -1,7 +1,7 @@
 #ifndef JSONSERVICE_H
 #define JSONSERVICE_H
 
-#include "AgendaService.h"
+#include "../AgendaService.h"
 #include "Storage.h"
 using std::list;
 using std::string;

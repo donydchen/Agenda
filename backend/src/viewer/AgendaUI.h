@@ -1,9 +1,8 @@
 #ifndef AGENDAUI_H
 #define AGENDAUI_H
 
-#include "AgendaService.h"
-#include "JsonService.h"
-#include "SqliteService.h"
+#include "../controller/json/JsonService.h"
+#include "../controller/sqlite/SqliteService.h"
 #include <iostream>
 #include <string>
 

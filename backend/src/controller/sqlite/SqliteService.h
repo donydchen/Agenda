@@ -1,10 +1,7 @@
 #ifndef SQLITE_SERVICE_H
 #define SQLITE_SERVICE_H
 
-#include "AgendaService.h"
-#include "Storage.h"
-#include "User.h"
-#include "Meeting.h"
+#include "../AgendaService.h"
 #include <sqlite3.h>
 using std::list;
 using std::string;
@@ -38,8 +35,8 @@ private:
     bool execSQL(const char* sql) const;
     bool isResEmpty(const char* sql) const;
     list<Meeting> execSQLMeeting(const char* sql) const;
-    bool parseDate(const char *inputDate, char *timestamp);
     std::size_t tsToSec(const char *timestamp) const;
+    string secToTs(int unixTime) const;
 
 };
 

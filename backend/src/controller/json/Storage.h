@@ -9,8 +9,8 @@
 #include <string>
 #include <functional>
 
-#include "User.h"
-#include "Meeting.h"
+#include "../../model/User.h"
+#include "../../model/Meeting.h"
 
 class Storage {
   private:

@@ -1,5 +1,6 @@
 #include "SqliteService.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <ctime>
 #include <iostream>
 using std::cout;
@@ -7,8 +8,9 @@ using std::cin;
 using std::endl;
 
 SqliteService::SqliteService() {
+    serviceName_ = "SQLite";
     // create db and table if needed
-    const char* dbPath = "Agenda.sqlite3";
+    const char* dbPath = "data/Agenda.sqlite3";
     int rc = sqlite3_open(dbPath, &db);
     if (rc) {
         string errmsg(sqlite3_errmsg(db));
@@ -165,14 +167,14 @@ bool SqliteService::deleteAllMeetings(string userName) {
 }
 
 void SqliteService::initDB() {
-    char *sql;
+    string sql;
     // create table user if not exist
     sql = "CREATE TABLE IF NOT EXISTS User (" \
           "name     TEXT  PRIMARY KEY  NOT NULL, " \
           "password TEXT  NOT NULL, " \
           "email    TEXT  NOT NULL, " \
           "phone    TEXT  NOT NULL);";
-    execSQL(sql);
+    execSQL(sql.c_str());
     // create table meeting if not exist
     sql = "CREATE TABLE IF NOT EXISTS Meeting (" \
           "sponsor      TEXT     NOT NULL, " \
@@ -180,7 +182,7 @@ void SqliteService::initDB() {
           "sdate        INTEGER  NOT NULL, " \
           "edate        INTEGER  NOT NULL, " \
           "title        TEXT     PRIMARY KEY  NOT NULL);";
-    execSQL(sql);
+    execSQL(sql.c_str());
 }
 
 
@@ -246,8 +248,8 @@ list<Meeting> SqliteService::execSQLMeeting(const char* sql) const {
         Meeting meeting;
         meeting.setSponsor(string((const char *)sqlite3_column_text(stmt, 0)));
         meeting.setParticipator(string((const char *)sqlite3_column_text(stmt, 1)));
-        meeting.setStartDate(Date::stringToDate("2016-05-10/11:20"));
-        meeting.setEndDate(Date::stringToDate("2016-05-10/13:20"));
+        meeting.setStartDate(Date::stringToDate(secToTs(atoi((const char*)sqlite3_column_text(stmt, 2)))));
+        meeting.setEndDate(Date::stringToDate(secToTs(atoi((const char*)sqlite3_column_text(stmt, 3)))));
         meeting.setTitle(string((const char *)sqlite3_column_text(stmt, 4)));
         meetings.push_back(meeting);
     }
@@ -256,20 +258,25 @@ list<Meeting> SqliteService::execSQLMeeting(const char* sql) const {
     return meetings;
 }
 
-
-bool SqliteService::parseDate(const char *inputDate, char *timestamp) {
-    string year, month, day, hour, minute;
-    sscanf(inputDate, "%s-%s-%s/%s:%s", year, month, day, hour, minute);
-    sprintf(timestamp, "%s-%s-%s %s:%s:%s", year, month, day, hour, minute, "00");
-    return true;
-}
-
-
+/*
+ * Convert readable timestamp to unix time for storage
+ */
 std::size_t SqliteService::tsToSec(const char *timestamp) const {
     std::tm tm_struct;
     strptime(timestamp, "%Y-%m-%d/%H:%M", &tm_struct);
-    tm_struct.tm_isdst = 1;
+    tm_struct.tm_isdst = 0;
     std::size_t t = std::mktime(&tm_struct);
 
     return t;
+}
+
+/*
+ * Convert unix time to readable timestamp for display
+ */
+string SqliteService::secToTs(int unixTime) const {
+    std::time_t t = unixTime;
+    std::tm *tm = std::localtime(&t);
+    char dateTime[50];
+    strftime(dateTime, sizeof(dateTime), "%Y-%m-%d/%H:%M", tm);
+    return dateTime;
 }

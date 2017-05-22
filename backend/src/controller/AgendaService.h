@@ -1,8 +1,8 @@
 #ifndef AGENDASERVICE_H
 #define AGENDASERVICE_H
 
-#include "User.h"
-#include "Meeting.h"
+#include "../model/User.h"
+#include "../model/Meeting.h"
 #include <list>
 #include <string>
 
@@ -26,6 +26,10 @@ public:
     virtual std::list<Meeting> listAllParticipateMeetings(std::string userName) const = 0;
     virtual bool deleteMeeting(std::string userName, std::string title) = 0;
     virtual bool deleteAllMeetings(std::string userName) = 0;
+
+    std::string getServiceName(void) {return serviceName_;}
+protected:
+    std::string serviceName_;
 };
 
 #endif
