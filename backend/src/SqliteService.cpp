@@ -1,6 +1,10 @@
 #include "SqliteService.h"
 #include <stdio.h>
 #include <ctime>
+#include <iostream>
+using std::cout;
+using std::cin;
+using std::endl;
 
 SqliteService::SqliteService() {
     // create db and table if needed
@@ -21,7 +25,7 @@ SqliteService::~SqliteService() {
 
 
 bool SqliteService::userLogIn(string userName, string password) {
-    char *sql;
+    char sql [200];
     sprintf(sql, "SELECT * FROM User WHERE name = \'%s\' and " \
                  "password = \'%s\';", userName.c_str(), password.c_str());
     return !isResEmpty((const char *)sql);
@@ -30,16 +34,18 @@ bool SqliteService::userLogIn(string userName, string password) {
 
 bool SqliteService::userRegister(string userName, string password,
             string email, string phone) {
-    char *sql;
+    //cout << "userRegister: " << userName << endl;
+    char sql [200];
     sprintf(sql, "INSERT INTO User (name, password, email, phone) " \
                  "VALUES (\'%s\', \'%s\', \'%s\', \'%s\');",
                  userName.c_str(), password.c_str(), email.c_str(), phone.c_str());
+    //cout << sql << endl;
     return execSQL((const char *)sql);
 }
 
 
 bool SqliteService::deleteUser(string userName, string password) {
-    char *sql;
+    char sql [200];
     sprintf(sql, "DELETE FROM User WHERE name=\'%s\' and password=\'%s\';",
                  userName.c_str(), password.c_str());
     if (execSQL((const char *)sql) && deleteAllMeetings(userName))
@@ -87,7 +93,7 @@ bool SqliteService::createMeeting(string userName, string title, string particip
     if (startT >= endT)
         return false;
 
-    char *sql;
+    char sql [200];
     sprintf(sql, "INSERT INTO Meeting (sponsor, participator, sdate, edate, title) " \
                  "VALUES (\'%s\', \'%s\', %d, %d, \'%s\');",
                  userName.c_str(), participator.c_str(), (int)startT, (int)endT, title.c_str());
@@ -97,7 +103,7 @@ bool SqliteService::createMeeting(string userName, string title, string particip
 
 
 list<Meeting> SqliteService::meetingQuery(string userName, string title) const {
-    char *sql;
+    char sql [200];
     sprintf(sql, "SELECT * FROM Meeting WHERE sponsor=\'%s\' AND title=\'%s\';",
                  userName.c_str(), title.c_str());
     return execSQLMeeting((const char *)sql);
@@ -107,7 +113,7 @@ list<Meeting> SqliteService::meetingQuery(string userName, string title) const {
 list<Meeting> SqliteService::meetingQuery(string userName, string startDate, string endDate) const {
     std::size_t startT = tsToSec(startDate.c_str());
     std::size_t endT = tsToSec(endDate.c_str());
-    char *sql;
+    char sql [200];
     sprintf(sql, "SELECT * FROM Meeting WHERE sponsor = \'%s\' " \
                  "AND sdate >= %d AND edate <= %d;",
                  userName.c_str(), (int)startT, (int)endT);
@@ -116,7 +122,7 @@ list<Meeting> SqliteService::meetingQuery(string userName, string startDate, str
 
 
 list<Meeting> SqliteService::listAllMeetings(string userName) const {
-    char *sql;
+    char sql [200];
     sprintf(sql, "SELECT * FROM Meeting WHERE (sponsor = \'%s\') " \
                  "OR (participator = \'%s\');", userName.c_str(), userName.c_str());
     return execSQLMeeting((const char *)sql);
@@ -124,14 +130,16 @@ list<Meeting> SqliteService::listAllMeetings(string userName) const {
 
 
 list<Meeting> SqliteService::listAllSponsorMeetings(string userName) const {
-    char *sql;
-    sprintf(sql, "SELECT * FORM Meeting WHERE sponsor = \'%s\';", userName.c_str());
+    char sql [200];
+    //cout << "listAllSponsorMeetings: " << userName << endl;
+    sprintf(sql, "SELECT * FROM Meeting WHERE (sponsor = \'%s\');", userName.c_str());
+    //cout << sql << endl;
     return execSQLMeeting((const char *)sql);
 }
 
 
 list<Meeting> SqliteService::listAllParticipateMeetings(string userName) const {
-    char *sql;
+    char sql [200];
     sprintf(sql, "SELECT * FROM Meeting WHERE participator = \'%s\';",
                  userName.c_str());
     return execSQLMeeting((const char *)sql);
@@ -139,7 +147,7 @@ list<Meeting> SqliteService::listAllParticipateMeetings(string userName) const {
 
 
 bool SqliteService::deleteMeeting(string userName, string title) {
-    char *sql;
+    char sql [200];
     sprintf(sql, "DELETE FROM Meeting " \
                  "WHERE (sponsor = \'%s\' OR participator = \'%s\') " \
                  "AND (title = \'%s\');",
@@ -149,7 +157,7 @@ bool SqliteService::deleteMeeting(string userName, string title) {
 
 
 bool SqliteService::deleteAllMeetings(string userName) {
-    char *sql;
+    char sql [200];
     sprintf(sql, "DELETE FROM Meeting " \
                  "WHERE (sponsor = \'%s\' OR participator = \'%s\');",
                  userName.c_str(), userName.c_str());
