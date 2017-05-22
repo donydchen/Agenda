@@ -1,6 +1,5 @@
 #include "loginwindow.h"
 #include "ui_loginwindow.h"
-#include "mainwindow.h"
 #include <QMessageBox>
 
 using std::string;
@@ -15,11 +14,13 @@ LoginWindow::LoginWindow(QWidget *parent) :
     ui->signupwidget->hide();
 
     agendaService_ = &sqliteService_;
+    mainWindow = NULL;
 }
 
 LoginWindow::~LoginWindow()
 {
     delete ui;
+    delete mainWindow;
 }
 
 void LoginWindow::on_pushButton_clicked()
@@ -40,9 +41,14 @@ void LoginWindow::on_pushButton_clicked()
                     + "Click OK to continue...";
             QMessageBox::information(NULL, "SignIn Success", content.c_str(),
                                      QMessageBox::Ok);
-            MainWindow *mainWindow = new MainWindow(username, password, agendaService_);
+
+            if (mainWindow == NULL) {
+                mainWindow = new MainWindow();
+                connect(mainWindow, SIGNAL(mainWinClose()), this, SLOT(showLoginWin()));
+            }
+            mainWindow->updateWin(username, password, agendaService_);
             mainWindow->show();
-            close();
+            hide();
         } else {
             //pop out error message message box
             QMessageBox::warning(NULL, "Login Failed", "Please check out your Username or Password!");
@@ -79,6 +85,15 @@ void LoginWindow::on_signup_clicked()
         }
     }
 
+}
+
+
+void LoginWindow::showLoginWin() {
+    /*if (mainWindow != NULL) {
+        delete mainWindow;
+        mainWindow = NULL;
+    }*/
+    show();
 }
 
 

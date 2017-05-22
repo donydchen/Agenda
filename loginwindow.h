@@ -2,6 +2,7 @@
 #define LOGINWINDOW_H
 
 #include <QMainWindow>
+#include "mainwindow.h"
 #include "backend/src/controller/json/JsonService.h"
 #include "backend/src/controller/sqlite/SqliteService.h"
 
@@ -22,11 +23,14 @@ private slots:
 
     void on_signup_clicked();
 
+    void showLoginWin();
+
 private:
     Ui::LoginWindow *ui;
     JsonService jsonService_;
     SqliteService sqliteService_;
     AgendaService *agendaService_;
+    MainWindow *mainWindow;
 
     void setupBackend(QString);
 };

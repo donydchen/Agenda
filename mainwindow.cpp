@@ -7,29 +7,43 @@
 using std::string;
 using std::list;
 
-MainWindow::MainWindow(string username, string password,
-                       AgendaService *agendaService, QWidget *parent) :
-    ui(new Ui::MainWindow),
-    userName_(username), userPassword_(password), agendaService_(agendaService),
-    QMainWindow(parent)
+MainWindow::MainWindow(QWidget *parent) :
+    ui(new Ui::MainWindow), QMainWindow(parent)
 {
     ui->setupUi(this);
-    ui->actionLogout->setText(ui->actionLogout->text() + " \"" + userName_.c_str() + "\"");
-    ui->actionDelete->setText(ui->actionDelete->text() + " \"" + userPassword_.c_str() + "\"");
-    setWindowTitle(windowTitle() + "(" + agendaService_->getServiceName().c_str()
-                   + ") : " + userName_.c_str());
 
-    btnStatus = BtnStatus::Query;
     //set table view to be uneditable
     ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     //display current time in status bar
-    curTime = new QLabel("   " + QTime::currentTime().toString("hh:mm:ss"), ui->statusBar);
+    curTime = new QLabel("   System Time: " + QTime::currentTime().toString("hh:mm:ss"), ui->statusBar);
+    curTime->setFixedWidth(300);
     startTimer(1000);
 
-    //set up the homepage
-    ui->wel_label->setText(ui->wel_label->text() + userName_.c_str());
+}
 
+void MainWindow::updateWin(string username, string password,
+                 AgendaService *agendaService) {
+    // update property
+    userName_ = username;
+    userPassword_ = password;
+    agendaService_ = agendaService;
+
+    btnStatus = BtnStatus::Query;
+
+    // update window title and toolbar text
+    string buffer;
+    buffer = "Logout User \"" + userName_ + "\"";
+    ui->actionLogout->setText(buffer.c_str());
+    buffer = "Delete User \"" + userName_ + "\"";
+    ui->actionDelete->setText(buffer.c_str());
+    buffer = "Agenda (" + agendaService_->getServiceName()
+             + ") : " + userName_;
+    setWindowTitle(buffer.c_str());
+
+    //set up the homepage
+    buffer = "Welcome " + userName_;
+    ui->wel_label->setText(buffer.c_str());
     showPage(PageType::HomePage);
 }
 
@@ -37,6 +51,7 @@ MainWindow::~MainWindow()
 {
     //agendaService_->quitAgenda();
     delete ui;
+    delete curTime;
 }
 
 
@@ -57,9 +72,8 @@ void MainWindow::on_actionLogout_triggered()
                           content.c_str(),
                           QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
     if (ans == QMessageBox::Yes) {
-        LoginWindow *loginWindow = new LoginWindow();
-        loginWindow->show();
-        close();
+        emit mainWinClose();
+        hide();
     }
 }
 
@@ -199,6 +213,7 @@ void MainWindow::on_actionCreate_A_Meeting_triggered()
     // add users to participator combo box
     list<User> users = agendaService_->listAllUsers();
     list<User>::iterator it;
+    ui->parComboBox->clear();
     for (it = users.begin(); it != users.end(); ++it) {
         string user = it->getName();
         if (user != userName_)
@@ -458,8 +473,8 @@ void MainWindow::showPage(PageType pageType) {
  * @param event
  * update current time in status bar
  */
-void MainWindow::timerEvent(QTimerEvent *event) {
-    curTime->setText("   " + QTime::currentTime().toString("hh:mm:ss"));
+void MainWindow::timerEvent(QTimerEvent *) {
+    curTime->setText("   System Time: " + QTime::currentTime().toString("hh:mm:ss"));
 }
 
 

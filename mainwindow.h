@@ -16,9 +16,13 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(std::string username, std::string password,
-                        AgendaService *agendaService, QWidget *parent = 0);
+    explicit MainWindow(QWidget *parent = 0);
+    void updateWin(std::string username, std::string password,
+                     AgendaService *agendaService);
     ~MainWindow();
+
+signals:
+    void mainWinClose();
 
 private slots:
     void on_actionLogout_triggered();
