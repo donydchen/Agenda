@@ -1,5 +1,5 @@
-main: Agenda.cpp User Date Meeting Storage JsonService AgendaUI
-	g++ Agenda.cpp User.o Date.o Meeting.o Storage.o AgendaService.h JsonService.o AgendaUI.o -o Agenda -g -std=c++11
+main: Agenda.cpp User Date Meeting Storage JsonService SqliteService AgendaUI
+	g++ Agenda.cpp User.o Date.o Meeting.o Storage.o AgendaService.h JsonService.o SqliteService.o AgendaUI.o -o Agenda -g -std=c++11 -l sqlite3
 
 User: User.h User.cpp
 	g++ User.h User.cpp -c -std=c++11 -g
@@ -11,6 +11,8 @@ Storage: Storage.h Storage.cpp
 	g++ Storage.h Storage.cpp -c -std=c++11 -g
 JsonService: JsonService.h JsonService.cpp
 	g++ JsonService.h JsonService.cpp -c -std=c++11 -g
+SqliteService: SqliteService.h SqliteService.cpp
+	g++ SqliteService.h SqliteService.cpp -c -std=c++11 -g -l sqlite3
 AgendaUI: AgendaUI.h AgendaUI.cpp
 	g++ AgendaUI.h AgendaUI.cpp -c -std=c++11 -g
 

@@ -11,7 +11,7 @@ using std::setw;
 
 
 AgendaUI::AgendaUI() {
-    agendaService_ = &jsonService_;
+    agendaService_ = &sqliteService_;
 }
 
 void AgendaUI::OperationLoop(void) {
@@ -146,7 +146,7 @@ void AgendaUI::setupBackend(void) {
         agendaService_ = &jsonService_;
         cout << "[setup] backend is set to JSON!!" << endl;
     } else if (backend == "sqlite") {
-        // sqlite
+        agendaService_ = &sqliteService_;
         cout << "[setup] backend is set to SQLite!!" << endl;
     } else {
         cout << "[error] wrong command!" << endl;

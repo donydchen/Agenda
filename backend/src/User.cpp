@@ -2,12 +2,15 @@
 
 using std::string;
 
+
+User::User() {}
+
 User::User(string userName, string userPassword, string userEmail, string userPhone) :
     name_(userName), password_(userPassword), email_(userEmail), phone_(userPhone) { }
 
 string User::getName() const {
     return name_;
-}   
+}
 
 void User::setName(string name) {
     name_ = name;
@@ -24,7 +27,7 @@ void User::setPassword(string password) {
 string User::getEmail() const {
     return email_;
 }
- 
+
 void User::setEmail(string email) {
     email_ = email;
 }

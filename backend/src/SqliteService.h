@@ -3,6 +3,8 @@
 
 #include "AgendaService.h"
 #include "Storage.h"
+#include "User.h"
+#include "Meeting.h"
 #include <sqlite3.h>
 using std::list;
 using std::string;
@@ -31,11 +33,14 @@ public:
     virtual bool deleteAllMeetings(string userName);
 private:
     sqlite3* db;
-    string sql;
-    int  rc;
-    bool initDB(void);
-    void execSQL(void);
-    bool isResEmpty(void);
+
+    void initDB(void);
+    bool execSQL(const char* sql) const;
+    bool isResEmpty(const char* sql) const;
+    list<Meeting> execSQLMeeting(const char* sql) const;
+    bool parseDate(const char *inputDate, char *timestamp);
+    std::size_t tsToSec(const char *timestamp) const;
+
 };
 
 

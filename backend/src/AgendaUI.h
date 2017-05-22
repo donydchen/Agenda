@@ -3,6 +3,7 @@
 
 #include "AgendaService.h"
 #include "JsonService.h"
+#include "SqliteService.h"
 #include <iostream>
 #include <string>
 
@@ -15,6 +16,7 @@ class AgendaUI {
   std::string userName_;
   std::string userPassword_;
   JsonService jsonService_;
+  SqliteService sqliteService_;
   AgendaService *agendaService_ = &jsonService_;
 
   // task functions

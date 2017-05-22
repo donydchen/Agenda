@@ -2,10 +2,13 @@
 
 using std::string;
 
+
+Meeting::Meeting() {}
+
 Meeting::Meeting(string sponsor, string participator,
                 Date startTime, Date endTime, string title) :
-    sponsor_(sponsor), 
-    participator_(participator), 
+    sponsor_(sponsor),
+    participator_(participator),
     startDate_(startTime),
     endDate_(endTime),
     title_(title) { }
