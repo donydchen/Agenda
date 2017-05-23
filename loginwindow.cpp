@@ -2,6 +2,7 @@
 #include "ui_loginwindow.h"
 #include <QMessageBox>
 #include <QIcon>
+#include <QDir>
 
 using std::string;
 
@@ -18,7 +19,7 @@ LoginWindow::LoginWindow(string jsonPath, string sqlitePath, QWidget *parent) :
     mainWindow = NULL;
 
     setFixedSize(size());
-    QIcon::setThemeName("elementary");
+    QIcon::setThemeName("ubuntu-mono-dark");
 }
 
 LoginWindow::~LoginWindow()
@@ -43,6 +44,8 @@ void LoginWindow::on_pushButton_clicked()
             //close window and open new main window with username and password
             string content = "Sign in as <font color='red'>" + username + "</font><br>"
                     + "Click OK to continue...";
+            //string content = QDir::currentPath().toUtf8().constData();
+            //string content = QCoreApplication::applicationDirPath().toUtf8().constData();
             QMessageBox::information(NULL, "SignIn Success", content.c_str(),
                                      QMessageBox::Ok);
 

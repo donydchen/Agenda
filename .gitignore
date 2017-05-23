@@ -3,3 +3,11 @@ backend/src/*.o
 
 mkpkg/pkg
 mkpkg/*.deb
+mkpkg/*.AppImage
+mkpkg/resources
+mkpkg/lib
+mkpkg/plugins
+mkpkg/Agenda*
+mkpkg/AppRun
+
+Agenda.pro.user

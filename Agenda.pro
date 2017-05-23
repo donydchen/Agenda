@@ -7,6 +7,8 @@
 QT       += core gui
 
 LIBS     += -lsqlite3
+QMAKE_CXXFLAGS += -std=c++11
+
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -39,6 +41,9 @@ HEADERS  += mainwindow.h \
 FORMS    += mainwindow.ui \
     loginwindow.ui
 
-DISTFILES += \
-    backend/src/data/Agenda.json \
-    backend/src/data/Agenda.sqlite3
+
+copydata.commands = $(COPY_DIR) $$PWD/resources $$OUT_PWD
+first.depends = $(first) copydata
+export(first.depends)
+export(copydata.commands)
+QMAKE_EXTRA_TARGETS += first copydata

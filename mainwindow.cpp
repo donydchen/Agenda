@@ -26,7 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
     initToolbar();
 
     setFixedSize(size());
-    QIcon::setThemeName("elementary");
+    QIcon::setThemeName("ubuntu-mono-dark");
 }
 
 void MainWindow::updateWin(string username, string password,
@@ -60,27 +60,28 @@ void MainWindow::updateWin(string username, string password,
  */
 void MainWindow::initToolbar() {
     //ui->toolBar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    QString curPath = QCoreApplication::applicationDirPath();
     // home
-    QAction *tbHome = ui->toolBar->addAction(QIcon::fromTheme("user-home"), "Home");
+    QAction *tbHome = ui->toolBar->addAction(QIcon(curPath + "/resources/user-home.gif"), "Home");
     connect(tbHome, SIGNAL(triggered()), this, SLOT(on_actionHome_triggered()));
     ui->toolBar->addSeparator();
 
     // list all user
-    QAction *tbList = ui->toolBar->addAction(QIcon::fromTheme("go-down"), "List Users");
+    QAction *tbList = ui->toolBar->addAction(QIcon(curPath + "/resources/go-down.gif"), "List Users");
     connect(tbList, SIGNAL(triggered()), this, SLOT(on_actionList_triggered()));
     // create meeting
-    QAction *tbCreate = ui->toolBar->addAction(QIcon::fromTheme("document-new"), "Create Meeting");
+    QAction *tbCreate = ui->toolBar->addAction(QIcon(curPath + "/resources/document-new.gif"), "Create Meeting");
     connect(tbCreate, SIGNAL(triggered()), this, SLOT(on_actionCreate_A_Meeting_triggered()));
     // delete meeting
-    QAction *tbDel = ui->toolBar->addAction(QIcon::fromTheme("edit-delete"), "Delete Meeting");
+    QAction *tbDel = ui->toolBar->addAction(QIcon(curPath + "/resources/edit-delete.gif"), "Delete Meeting");
     connect(tbDel, SIGNAL(triggered()), this, SLOT(on_actionDelete_A_Meeting_triggered()));
     // search meeting
-    QAction *tbSearch = ui->toolBar->addAction(QIcon::fromTheme("edit-find"), "Search Meeting");
+    QAction *tbSearch = ui->toolBar->addAction(QIcon(curPath + "/resources/edit-find.gif"), "Search Meeting");
     connect(tbSearch, SIGNAL(triggered()), this, SLOT(on_actionQuery_Meeting_By_Title_triggered()));
     ui->toolBar->addSeparator();
 
     // log out
-    QAction *tbLogout = ui->toolBar->addAction(QIcon::fromTheme("system-log-out"), "Log Out");
+    QAction *tbLogout = ui->toolBar->addAction(QIcon(curPath + "/resources/system-log-out.gif"), "Log Out");
     connect(tbLogout, SIGNAL(triggered()), this, SLOT(on_actionLogout_triggered()));
 }
 
