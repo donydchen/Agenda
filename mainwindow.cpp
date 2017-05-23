@@ -3,6 +3,9 @@
 #include "loginwindow.h"
 #include <QMessageBox>
 #include <QStandardItemModel>
+#include <Qt>
+#include <QAction>
+#include <QIcon>
 
 using std::string;
 using std::list;
@@ -16,10 +19,14 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     //display current time in status bar
-    curTime = new QLabel("   System Time: " + QTime::currentTime().toString("hh:mm:ss"), ui->statusBar);
+    curTime = new QLabel("   SYSTEM TIME: " + QTime::currentTime().toString("hh:mm:ss"), ui->statusBar);
     curTime->setFixedWidth(300);
     startTimer(1000);
 
+    initToolbar();
+
+    setFixedSize(size());
+    QIcon::setThemeName("elementary");
 }
 
 void MainWindow::updateWin(string username, string password,
@@ -45,6 +52,36 @@ void MainWindow::updateWin(string username, string password,
     buffer = "Welcome " + userName_;
     ui->wel_label->setText(buffer.c_str());
     showPage(PageType::HomePage);
+}
+
+
+/*
+ * Add button to toolbar
+ */
+void MainWindow::initToolbar() {
+    //ui->toolBar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    // home
+    QAction *tbHome = ui->toolBar->addAction(QIcon::fromTheme("user-home"), "Home");
+    connect(tbHome, SIGNAL(triggered()), this, SLOT(on_actionHome_triggered()));
+    ui->toolBar->addSeparator();
+
+    // list all user
+    QAction *tbList = ui->toolBar->addAction(QIcon::fromTheme("go-down"), "List Users");
+    connect(tbList, SIGNAL(triggered()), this, SLOT(on_actionList_triggered()));
+    // create meeting
+    QAction *tbCreate = ui->toolBar->addAction(QIcon::fromTheme("document-new"), "Create Meeting");
+    connect(tbCreate, SIGNAL(triggered()), this, SLOT(on_actionCreate_A_Meeting_triggered()));
+    // delete meeting
+    QAction *tbDel = ui->toolBar->addAction(QIcon::fromTheme("edit-delete"), "Delete Meeting");
+    connect(tbDel, SIGNAL(triggered()), this, SLOT(on_actionDelete_A_Meeting_triggered()));
+    // search meeting
+    QAction *tbSearch = ui->toolBar->addAction(QIcon::fromTheme("edit-find"), "Search Meeting");
+    connect(tbSearch, SIGNAL(triggered()), this, SLOT(on_actionQuery_Meeting_By_Title_triggered()));
+    ui->toolBar->addSeparator();
+
+    // log out
+    QAction *tbLogout = ui->toolBar->addAction(QIcon::fromTheme("system-log-out"), "Log Out");
+    connect(tbLogout, SIGNAL(triggered()), this, SLOT(on_actionLogout_triggered()));
 }
 
 MainWindow::~MainWindow()
@@ -206,8 +243,6 @@ void MainWindow::on_actionList_All_Participant_Meetings_triggered()
  */
 void MainWindow::on_actionCreate_A_Meeting_triggered()
 {
-    ui->tableView->hide();
-    ui->welcomewidget->hide();
 
     // add users to participator combo box
     list<User> users = agendaService_->listAllUsers();
@@ -227,7 +262,7 @@ void MainWindow::on_actionCreate_A_Meeting_triggered()
     ui->endDT->setDisplayFormat("MMMM dd,yyyy   hh:mm");
 
     // show the widget
-    ui->createmtwidget->show();
+    showPage(PageType::CreateMT);
 
 }
 
@@ -399,7 +434,7 @@ void MainWindow::on_searchBtn_2_clicked()
 
 void MainWindow::on_actionAbout_triggered()
 {
-    QMessageBox::about(NULL, "Agenda", "Agenda is a simple app writen by Donald<br>1st Oct. 2016");
+    QMessageBox::about(NULL, "Agenda", "Agenda is a simple app writen by Donald<br>1st Oct. 2016<br>May 2017: Update, add SQLite3 Backend");
 }
 
 /**
@@ -450,16 +485,23 @@ void MainWindow::showPage(PageType pageType) {
     ui->searchwidget->hide();
     ui->searchwidget_2->hide();
     ui->welcomewidget->hide();
+    ui->opTitle->hide();
     switch(pageType) {
         case PageType::HomePage:
             ui->welcomewidget->show(); break;
         case PageType::TableView:
             ui->tableView->show(); break;
         case PageType::CreateMT:
+            ui->opTitle->setText("Create Meeting");
+            ui->opTitle->show();
             ui->createmtwidget->show(); break;
         case PageType::SearchTitle:
+            ui->opTitle->setText("Search");
+            ui->opTitle->show();
             ui->searchwidget->show(); break;
         case PageType::SearchTime:
+            ui->opTitle->setText("Search");
+            ui->opTitle->show();
             ui->searchwidget_2->show(); break;
         default:
             ui->welcomewidget->show();
@@ -473,7 +515,7 @@ void MainWindow::showPage(PageType pageType) {
  * update current time in status bar
  */
 void MainWindow::timerEvent(QTimerEvent *) {
-    curTime->setText("   System Time: " + QTime::currentTime().toString("hh:mm:ss"));
+    curTime->setText("   SYSTEM TIME: " + QTime::currentTime().toString("hh:mm:ss"));
 }
 
 

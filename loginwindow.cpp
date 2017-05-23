@@ -1,6 +1,7 @@
 #include "loginwindow.h"
 #include "ui_loginwindow.h"
 #include <QMessageBox>
+#include <QIcon>
 
 using std::string;
 
@@ -15,6 +16,9 @@ LoginWindow::LoginWindow(string jsonPath, string sqlitePath, QWidget *parent) :
 
     agendaService_ = &sqliteService_;
     mainWindow = NULL;
+
+    setFixedSize(size());
+    QIcon::setThemeName("elementary");
 }
 
 LoginWindow::~LoginWindow()

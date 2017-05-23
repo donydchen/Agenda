@@ -5,7 +5,7 @@
 #include <QLabel>
 #include "backend/src/controller/json/JsonService.h"
 #include "backend/src/controller/sqlite/SqliteService.h"
-
+#include <QAction>
 
 namespace Ui {
 class MainWindow;
@@ -62,9 +62,9 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QLabel *curTime;
+
     std::string userName_;
     std::string userPassword_;
-
     AgendaService *agendaService_;
     enum BtnStatus {Query, Delete};
     BtnStatus btnStatus;
@@ -73,6 +73,7 @@ private:
     void printMeetings(std::list<Meeting> meetings);
     void showPage(PageType pagetype);
     void timerEvent(QTimerEvent *event);
+    void initToolbar();
 };
 
 #endif // MAINWINDOW_H
