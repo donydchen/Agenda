@@ -22,7 +22,7 @@ class Storage {
     std::list<User> userList_;
     std::list<Meeting> meetingList_;
     // File IO
-    const char *fPath_;
+    std::string fPath_;
     bool readFromFile(void);
     bool writeToFile(void);
   public:
@@ -51,7 +51,7 @@ class Storage {
     // File IO
     bool sync(void);
     // Setup local file
-    void setupPath(const char *fPath);
+    void setupPath(std::string fPath);
 };
 
 #endif

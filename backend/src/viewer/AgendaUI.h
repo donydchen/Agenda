@@ -8,7 +8,7 @@
 
 class AgendaUI {
  public:
-  AgendaUI();
+  AgendaUI(std::string jsonPath, std::string sqlitePath);
   void OperationLoop(void);
 
  private:

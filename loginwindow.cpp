@@ -4,11 +4,11 @@
 
 using std::string;
 
-LoginWindow::LoginWindow(QWidget *parent) :
+LoginWindow::LoginWindow(string jsonPath, string sqlitePath, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::LoginWindow),
-    jsonService_("/home/donald/Code/Agenda/backend/src/data/Agenda.json"),
-    sqliteService_("/home/donald/Code/Agenda/backend/src/data/Agenda.sqlite3")
+    jsonService_(jsonPath),
+    sqliteService_(sqlitePath)
 {
     ui->setupUi(this);
     ui->signupwidget->hide();
@@ -68,7 +68,7 @@ void LoginWindow::on_signup_clicked()
         string password = ui->upPass->text().toUtf8().constData();
         string email = ui->email->text().toUtf8().constData();
         string phone = ui->phone->text().toUtf8().constData();
-        setupBackend(ui->backendBox->currentData().toString());
+        setupBackend(ui->backendBox->currentText());
         // sign up success
         if (agendaService_->userRegister(username, password, email, phone)) {
             string content = "Your username is <font color='red'>" + username + "</font>";

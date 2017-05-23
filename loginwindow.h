@@ -15,7 +15,8 @@ class LoginWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit LoginWindow(QWidget *parent = 0);
+    explicit LoginWindow(std::string jsonPath, std::string sqlitePath,
+                         QWidget *parent = 0);
     ~LoginWindow();
 
 private slots:

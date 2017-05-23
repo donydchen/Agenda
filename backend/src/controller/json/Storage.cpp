@@ -19,12 +19,16 @@ Storage::Storage() {
 }
 
 bool Storage::sync(void) {
+    //std::cout << "call storage sync" << endl;
     return  writeToFile();
 }
 
-void Storage::setupPath(const char *fPath) {
+void Storage::setupPath(string fPath) {
+    //std::cout << "call setup path" << endl;
+    //std::cout << fPath << endl;
     fPath_ = fPath;
     readFromFile();
+    //std::cout << fPath_ << endl;
 }
 
 void lineTokenizer(string &line, map<string, string> &nameToValue) {
@@ -53,7 +57,7 @@ void lineTokenizer(string &line, map<string, string> &nameToValue) {
 }
 
 bool Storage::readFromFile(void) {
-    std::ifstream infile(fPath_);
+    std::ifstream infile(fPath_.c_str());
     if (!infile)
         return false;
 
@@ -102,9 +106,12 @@ bool Storage::readFromFile(void) {
 
 
 bool Storage::writeToFile(void) {
-    std::ofstream outfile(fPath_, std::ofstream::trunc);
-    if (!outfile)
+    //std::cout << fPath_;
+    std::ofstream outfile(fPath_.c_str(), std::ofstream::trunc);
+    if (!outfile) {
+        //std::cout << "fail to write file";
         return false;
+    }
 
     outfile << "{collection:\"User\",total:" << userList_.size() << "}" << endl;
     for (auto &user : userList_) {

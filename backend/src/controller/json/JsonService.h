@@ -8,7 +8,7 @@ using std::string;
 
 class JsonService: public AgendaService {
 public:
-    JsonService(const char *fPath);
+    JsonService(string fPath);
     ~JsonService();
     // User operation
     virtual bool userLogIn(string userName, string password);

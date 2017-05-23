@@ -1,14 +1,16 @@
 #include "JsonService.h"
+#include <iostream>
 
 using std::string;
 using std::list;
 
-JsonService::JsonService(const char *fPath) {
+JsonService::JsonService(string fPath) {
     serviceName_ = "JSON";
     storage_->getInstance()->setupPath(fPath);
 }
 
 JsonService::~JsonService() {
+    //std::cout << "release jsonService_" << std::endl;
     storage_->getInstance()->sync();
 }
 

@@ -8,7 +8,7 @@ using std::string;
 
 class SqliteService: public AgendaService {
 public:
-    SqliteService(const char *dbPath);
+    SqliteService(string dbPath);
     ~SqliteService();
     // User operation
     virtual bool userLogIn(string userName, string password);

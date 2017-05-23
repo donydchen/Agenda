@@ -10,8 +10,8 @@ using std::list;
 using std::setw;
 
 
-AgendaUI::AgendaUI() : jsonService_("data/Agenda.json"),
-     sqliteService_("data/Agenda.sqlite3") {
+AgendaUI::AgendaUI(string jsonPath, string sqlitePath) : jsonService_(jsonPath),
+     sqliteService_(sqlitePath) {
     agendaService_ = &sqliteService_;
 }
 

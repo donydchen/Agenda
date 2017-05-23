@@ -91,9 +91,8 @@ void MainWindow::on_actionDelete_triggered()
             QMessageBox::information(NULL, "Delete Succeed",
                                      content.c_str(),
                                      QMessageBox::Ok);
-            LoginWindow *loginWindow = new LoginWindow();
-            loginWindow->show();
-            close();
+            emit mainWinClose();
+            hide();
         }
         else {
             content = "Fail to delete user " + userName_;

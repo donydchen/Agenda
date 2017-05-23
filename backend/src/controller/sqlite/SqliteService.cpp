@@ -7,7 +7,7 @@ using std::cout;
 using std::cin;
 using std::endl;
 
-SqliteService::SqliteService(const char *dbPath) : dbPath_(dbPath) {
+SqliteService::SqliteService(string dbPath) : dbPath_(dbPath.c_str()) {
     serviceName_ = "SQLite";
     // create db and table if needed
     //const char* dbPath = "data/Agenda.sqlite3";
