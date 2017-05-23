@@ -1,0 +1,7 @@
+#!/bin/sh
+
+BIN_PATH='/usr/bin'
+SRC_PATH='/usr/share/AgendaQt'
+
+ln -s $SRC_PATH/Agenda $BIN_PATH/Agenda
+ln -s $SRC_PATH/AgendaQt $BIN_PATH/AgendaQt

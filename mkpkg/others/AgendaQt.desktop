@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Version=0.1
+Encoding=UTF-8
+Name=AgendaQt
+GenericName=AgendaQt
+Comment=a simple tool that helps you manage your live
+Exec=AgendaQt
+Icon=/usr/share/pixmaps/AgendaQt.png
+Terminal=false
+Categories=GNOME;

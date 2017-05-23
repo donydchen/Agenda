@@ -1,0 +1,8 @@
+Package: AgendaQt
+Version: 0.1.1
+Section: utils
+Priority: optional
+Maintainer: donald <ydchen@yahoo.com>
+Architecture: amd64
+Depends: sqlite3
+Description: A simple tool that helps you manage your live.

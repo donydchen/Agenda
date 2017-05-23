@@ -1,2 +1,5 @@
 backend/src/Agenda
 backend/src/*.o
+
+mkpkg/pkg
+mkpkg/*.deb
