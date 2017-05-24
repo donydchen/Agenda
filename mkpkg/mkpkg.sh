@@ -7,7 +7,7 @@ ICON_PATH='usr/share/pixmaps'
 SRC_PATH='usr/share/AgendaQt'
 AGENDAQT_BIN='AgendaQt'
 AGENDA_BIN='Agenda'
-DPKG_NAME='agendaqt_0.1.2_amd64.deb'
+DPKG_NAME='agendaqt_0.1.1_amd64.deb'
 
 
 # check AgendaQt and Agenda bin
