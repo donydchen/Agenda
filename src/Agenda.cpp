@@ -1,4 +1,4 @@
-#include "viewer/AgendaUI.h"
+#include "ui/terminal/AgendaUI.h"
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <pwd.h>
@@ -29,6 +29,6 @@ int main() {
         delete aui;
         aui = NULL;
     }
-    
+
     return 0;
 }

@@ -4,7 +4,7 @@ A simple **C\+\+** project for practice, it contains most of the object oriented
 
 ![icon](mkpkg/others/icon.png)
 
-### Features 
+### Features
 
 Agenda is a simple app that can help you manage your daily life. It includes the following useful features:
 
@@ -21,18 +21,18 @@ Agenda is a simple app that can help you manage your daily life. It includes the
 
 **Terminal version Agenda**
 
-![](backend/pic/1.png)     
-![](backend/pic/2.png)     
+![](pic/1.png)     
+![](pic/2.png)     
 
 **Qt5 version AgendaQt**
 
-![login](backend/pic/3.png)     
+![login](pic/3.png)     
 User sign in page
 
-![list_all_meeting](backend/pic/4.png)      
+![list_all_meeting](pic/4.png)      
 List all Meetings
 
-![create_meeting](backend/pic/5.png)     
+![create_meeting](pic/5.png)     
 Create a Meeting
 
 ### Install, Run and Uninstall
@@ -46,7 +46,7 @@ sudo apt -f install
 ```
 **Run**     
 
-* To run Qt version AgendaQt, type `AgendaQt` in terminal or find it in your system applications and click it. 
+* To run Qt version AgendaQt, type `AgendaQt` in terminal or find it in your system applications and click it.
 * To run terminal version Agenda, type `Agenda` in terminal.
 
 **Uninstall**    
@@ -94,6 +94,6 @@ Wait for a few seconds, and you could see a package named `agendaqt_x.x.x_amd64.
 
 ### Update History
 
-* **May 24th, 2017:** Add sqlite3 back end in order to adopt [Polymorphism](https://en.wikipedia.org/wiki/Polymorphism_(computer_science)) and [Inheritance](https://en.wikipedia.org/wiki/Inheritance_(object-oriented_programming)) features to this project; fine tune UI.
+* **May 24th, 2017:** Add sqlite3 back end in order to adopt [Polymorphism](https://en.wikipedia.org/wiki/Polymorphism_(computer_science)) and [Inheritance](https://en.wikipedia.org/wiki/Inheritance_(object-oriented_programming)) features to this project; Rearrange code structure; Fine tune UI.
 * **Oct. 1st, 2016:** Add Qt5 front end, the original terminal based version was moved to subfolder `backend/`.
 * **May 5th, 2016:** First commit.

@@ -1,5 +1,7 @@
-backend/src/Agenda
-backend/src/*.o
+src/Agenda
+src/*.o
+src/AgendaQt.pro.user
+
 
 mkpkg/pkg
 mkpkg/*.deb
@@ -9,5 +11,3 @@ mkpkg/lib
 mkpkg/plugins
 mkpkg/Agenda*
 mkpkg/AppRun
-
-Agenda.pro.user

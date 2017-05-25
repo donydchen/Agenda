@@ -26,7 +26,7 @@ then
     echo "and copy the binary file to here. "
     exit
 fi
-cp -rf ../resources .
+cp -rf ../src/resources .
 
 # setup qt5 environment
 echo "setup qt5 environment..."

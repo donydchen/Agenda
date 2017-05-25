@@ -3,8 +3,8 @@
 
 #include <QMainWindow>
 #include "mainwindow.h"
-#include "backend/src/controller/json/JsonService.h"
-#include "backend/src/controller/sqlite/SqliteService.h"
+#include "../../bll/json/JsonService.h"
+#include "../../bll/sqlite/SqliteService.h"
 
 namespace Ui {
 class LoginWindow;

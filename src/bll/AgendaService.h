@@ -1,8 +1,8 @@
 #ifndef AGENDASERVICE_H
 #define AGENDASERVICE_H
 
-#include "../model/User.h"
-#include "../model/Meeting.h"
+#include "../entity/User.h"
+#include "../entity/Meeting.h"
 #include <list>
 #include <string>
 

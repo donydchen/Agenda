@@ -1,4 +1,4 @@
-#include "loginwindow.h"
+#include "ui/qt5/loginwindow.h"
 #include <QApplication>
 #include <QStyleFactory>
 #include <QDir>
