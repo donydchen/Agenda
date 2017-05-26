@@ -35,6 +35,16 @@ List all Meetings
 ![create_meeting](pic/5.png)     
 Create a Meeting
 
+### System Design
+
+![three_tier](doc/Three_Tier.png)    
+Three Tier Architecture 
+
+![class_diagram](doc/Class_Diagram.png)    
+System Class Diagram 
+
+For more detail of project Agenda's design, Check out the **report** provided in `doc/Agenda_Report.pdf`.(*Sorry but it is Chinese only*)
+
 ### Install, Run and Uninstall
 
 **Install**     
